@@ -18,7 +18,6 @@ public class WelcomeState extends GameState {
 	
 	
 	public void processKeyReleased(int aKeyCode) {
-		System.out.println(aKeyCode);
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			System.exit(0);
 		if (aKeyCode == KeyEvent.VK_1 || aKeyCode == KeyEvent.VK_NUMPAD1)
@@ -36,6 +35,7 @@ public class WelcomeState extends GameState {
 		//System.out.println(memento().getLevel());
 		return "Play";
 	}
+	
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
@@ -49,7 +49,6 @@ public class WelcomeState extends GameState {
 		
 		String text1 = "WELCOME TO SNAKE GAME";
 		int textWidth1 = g.getFontMetrics().stringWidth(text1);
-		g.setColor(Color.white);
 		g.drawString(text1, (aGameFrameBuffer.getWidth()-textWidth1)/2, aGameFrameBuffer.getHeight()/2 - 60);
 		
 		String text2 = "CHOOSE LEVEL:";
