@@ -3,7 +3,7 @@ import java.util.LinkedList;
 public class Snake {
 	
 	private LinkedList<Point> snake;
-	private int snakeSpacing = 10;
+	private final int SNAKE_SPACING = 10;
 	private int size;
 	
 	public Snake() {
@@ -16,7 +16,7 @@ public class Snake {
 		int x = 10 + (int)(Math.random() * 500);
 		int y = 10 + (int)(Math.random() * 400);
 		for (int i = 0; i < this.size; i++) {
-			Point p = new Point(x + (i * snakeSpacing), y);
+			Point p = new Point(x + (i * SNAKE_SPACING), y);
 			this.snake.add(p);
 		}
 	}
@@ -30,11 +30,7 @@ public class Snake {
 	}
 
 	public int getSnakeSpacing() {
-		return snakeSpacing;
-	}
-
-	public void setSnakeSpacing(int snakeSpacing) {
-		this.snakeSpacing = snakeSpacing;
+		return SNAKE_SPACING;
 	}
 
 	public int getSize() {
@@ -45,12 +41,8 @@ public class Snake {
 		this.size = size;
 	}
 	
-	public void snakeMoved(Point newFirst) {
-		this.snake.add(0, newFirst);
+	public void snakeMoved(Point newHead) {
+		this.snake.add(0, newHead);
 		this.snake.removeLast();
 	}
-	
-	
-	
-
 }

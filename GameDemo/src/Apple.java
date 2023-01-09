@@ -1,6 +1,4 @@
-
 public class Apple {
-	
 	private Point location;
 	private int appleSize;
 	
@@ -23,9 +21,5 @@ public class Apple {
 		return appleSize;
 	}
 
-	
-	
-	
-	
-	
+	public void setAppleSize(int appleSize) { this.appleSize = appleSize; }
 }

@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class EndGameState extends GameState {
-
 	boolean active;
 	
 	public void enter(Object memento) {
@@ -32,7 +31,5 @@ public class EndGameState extends GameState {
 		g.setColor(Color.white);
 		g.drawString(text1, (aGameFrameBuffer.getWidth() - textWidth1)/2, aGameFrameBuffer.getHeight()/2 - 20);
 		g.drawString(text2, (aGameFrameBuffer.getWidth() - textWidth2)/2, aGameFrameBuffer.getHeight()/2 + 20);
-		
-			
 	}
 }

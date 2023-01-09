@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class WelcomeState extends GameState {
-
 	boolean active;
 	int chosenLevel;
 	//Level level;

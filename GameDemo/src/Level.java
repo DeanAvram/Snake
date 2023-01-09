@@ -1,6 +1,4 @@
-
 public class Level {
-	
 	private int level;
 	
 	public Level(int level) {
@@ -10,5 +8,4 @@ public class Level {
 	public int getLevel() {
 		return this.level;
 	}
-
 }
