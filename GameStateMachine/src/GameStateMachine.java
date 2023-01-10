@@ -36,7 +36,6 @@ public class GameStateMachine {
 		
 		Object memento = null;
 		GameState currentState = startState;
-
 		while (true) {			
 			String stateName = currentState.tick(memento, frameBuffer);
 

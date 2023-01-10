@@ -1,4 +1,3 @@
-
 public class DemoGame extends Game {
 
 	public DemoGame() {

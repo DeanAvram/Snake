@@ -1,3 +1,4 @@
+package gameObjects;
 
 public class Point {
 	

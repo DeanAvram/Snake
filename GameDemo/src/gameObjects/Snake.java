@@ -1,4 +1,6 @@
+package gameObjects;
 import java.util.LinkedList;
+import java.util.Random;
 
 public class Snake {
 	
@@ -13,8 +15,14 @@ public class Snake {
 	}
 	
 	public void initSnake() {
-		int x = 10 + (int)(Math.random() * 500);
-		int y = 10 + (int)(Math.random() * 400);
+		Random rand = new Random();
+		int Xmin = 20;
+        int Xmax = 620;
+        int Ymin = 50;
+        int Ymax = 460;
+        int scale = 10;
+        int x = (rand.nextInt((Xmax - Xmin) + 1) + Xmin) / scale * scale;
+        int y = (rand.nextInt((Ymax - Ymin) + 1) + Ymin) / scale * scale;
 		for (int i = 0; i < this.size; i++) {
 			Point p = new Point(x + (i * snakeSpacing), y);
 			this.snake.add(p);
