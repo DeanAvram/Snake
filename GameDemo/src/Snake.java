@@ -1,3 +1,5 @@
+package main.sprites;
+
 import java.util.LinkedList;
 
 public class Snake {
@@ -7,13 +9,13 @@ public class Snake {
 	
 	public Snake() {
 		this.length = 3;
-		this.snake = new LinkedList<Point>();
+		this.snake = new LinkedList<>();
 		initSnake();
 	}
 	
 	public void initSnake() {
-		int x = 10 + (int)(Math.random() * 500);
-		int y = 10 + (int)(Math.random() * 400);
+		int x = SNAKE_SPACING + (int)(Math.random() * 500);
+		int y = SNAKE_SPACING + (int)(Math.random() * 400);
 		for (int i = 0; i < this.length; i++) {
 			Point p = new Point(x + (i * SNAKE_SPACING), y);
 			this.snake.add(p);

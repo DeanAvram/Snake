@@ -1,28 +1,33 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
+import main.sprites.Apple;
+import main.sprites.Snake;
+
 public class PlayState extends GameState {
-
-	private final int LIFE_BOX_SIZE = 15;
-	private final int LIFE_BOX_SPACING = 20;
-
 	boolean active;
 	Snake snake;
 	Apple apple;
 	int lastPressed = 0;
 	float deltaTimeAverage;
 	int level;
-	int lives = 2;
-	
-	String message;
-	
+	GameStateInput input;
+	int lives;
+	int score;
+
 	public PlayState() {}
 	
 	public void enter(Object memento) {
 		active = true;
-		Level l = (Level)memento;
-		level = l.getLevel();
+		input = (GameStateInput)memento;
+		level = input.getLevel();
+		lives = input.getLives();
+		score = 0;
+		if (lives == 0)
+			active = false;
 		deltaTimeAverage = 0;
 		snake = new Snake();
 		apple = new Apple();
@@ -48,6 +53,14 @@ public class PlayState extends GameState {
 	}
 	
 	public void update(long deltaTime) {
+		if (isSnakeHitWall())
+			snakeHitWall();
+		if (isSnakeAteApple()) {
+			snakeAteApple();
+			score++;
+			apple = new Apple();
+		}
+
 		deltaTimeAverage = deltaTimeAverage * level * 0.9f + 0.001f*(float)deltaTime;
 		float deltaPos = deltaTimeAverage * this.snake.getLength();
 		Point snakeHead = this.snake.getSnake().getFirst();
@@ -107,6 +120,47 @@ public class PlayState extends GameState {
 		for (int i = 0; i < lives; i++) {
 			g.fillRect(LIFE_BOX_SPACING * 3 + (LIFE_BOX_SPACING * i), LIFE_BOX_SIZE - 5, LIFE_BOX_SIZE, LIFE_BOX_SIZE);
 		}
+		/*
+				g.setColor(Color.white);
+		String text = "LIVES";
+		int textWidth = g.getFontMetrics().stringWidth(text);
+		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth)/2, 20);
+		g.setColor(Color.RED);
+		//int x = 100;
+		int y = 30;
+		int width = 12;
+		int height = 12;
+		for (int i = 0; i < lives; i++) {
+			int x = 295 + (20 * i);
+			int[] triangleX = {
+		            x - 2*width/18,
+		            x + width + 2*width/18,
+		            (x - 2*width/18 + x + width + 2*width/18)/2};
+		    int[] triangleY = {
+		            y + height - 2*height/3,
+		            y + height - 2*height/3,
+		            y + height };
+		    g.fillOval(
+		            x - width/12,
+		            y,
+		            width/2 + width/6,
+		            height/2);
+		    g.fillOval(
+		            x + width/2 - width/12,
+		            y,
+		            width/2 + width/6,
+		            height/2);
+		    g.fillPolygon(triangleX, triangleY, triangleX.length);
+		}
+		 */
+	}
+
+	private void drawScore(GameFrameBuffer aGameFrameBuffer, int score) {
+		Graphics g = aGameFrameBuffer.graphics();
+		g.setColor(Color.white);
+		String text = "SCORE: " + score;
+		int textWidth = g.getFontMetrics().stringWidth(text);
+		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, 60);
 	}
 
 	private void drawWaitToNewGame(GameFrameBuffer aGameFrameBuffer) {
@@ -116,4 +170,59 @@ public class PlayState extends GameState {
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, aGameFrameBuffer.getWidth() / 2 - textWidth / 2, aGameFrameBuffer.getHeight() / 2);
 	}
+
+	public boolean isSnakeHitWall() {
+		return snake.getSnake().getFirst().getX() <= 0 || snake.getSnake().getFirst().getX() >= 640
+				|| snake.getSnake().getFirst().getY() >= 480 || snake.getSnake().getFirst().getY() <= 0;
+	}
+
+	public void snakeHitWall() {
+		lives--;
+		input = new GameStateInput(level, lives);
+		enter(input);
+	}
+
+	public boolean isSnakeAteApple() {
+		return snake.getSnake().getFirst().getX() == apple.getLocation().getX() &&
+				snake.getSnake().getFirst().getY() == apple.getLocation().getY();
+	}
+
+	public void snakeAteApple() {
+		int lastX = snake.getSnake().getLast().getX();
+		int lastY = snake.getSnake().getLast().getY();
+		if (lastPressed == KeyEvent.VK_UP) {
+			addDown(lastX, lastY);
+		}
+		else if (lastPressed == KeyEvent.VK_DOWN) {
+			addUp(lastX, lastY);
+		}
+		else if (lastPressed == KeyEvent.VK_LEFT) {
+			addRight(lastX, lastY);
+		}
+		else if (lastPressed == KeyEvent.VK_RIGHT) {
+			addLeft(lastX, lastY);
+		}
+
+	}
+
+	public void addDown(int lastX, int lastY) {
+		Point newLast = new Point(lastX, lastY + snake.getSnakeSpacing());
+		snake.getSnake().add(newLast);
+	}
+
+	public void addUp(int lastX, int lastY) {
+		Point newLast = new Point(lastX, lastY - snake.getSnakeSpacing());
+		snake.getSnake().add(newLast);
+	}
+
+	public void addLeft(int lastX, int lastY) {
+		Point newLast = new Point(lastX - snake.getSnakeSpacing(), lastY);
+		snake.getSnake().add(newLast);
+	}
+
+	public void addRight(int lastX, int lastY) {
+		Point newLast = new Point(lastX + snake.getSnakeSpacing(), lastY);
+		snake.getSnake().add(newLast);
+	}
+
 }

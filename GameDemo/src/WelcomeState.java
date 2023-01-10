@@ -1,3 +1,5 @@
+package main;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
@@ -11,8 +13,10 @@ public class WelcomeState extends GameState {
 		active = true;
 	}
 	
-	public Level memento() {
-		return new Level(chosenLevel);
+	public GameStateInput memento() {
+		//Level l = new Level(chosenLevel);
+		int lives = 3;
+		return new GameStateInput(chosenLevel, lives);
 	}
 	
 	
