@@ -1,5 +1,3 @@
-package main;
-
 public class GameStateInput {
 	private int level;
 	private int lives;

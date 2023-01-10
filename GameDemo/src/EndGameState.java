@@ -1,10 +1,9 @@
-package main;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class EndGameState extends GameState {
+	private final int SPACING = 20;
 	boolean active;
 	
 	public void enter(Object memento) {
@@ -26,12 +25,14 @@ public class EndGameState extends GameState {
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
-		String text1 = "GAME OVER";
-		String text2 = "PRESS 1 TO RETURN TO MAIN MENU OR ESC TO EXIT";
-		int textWidth1 = g.getFontMetrics().stringWidth(text1);
-		int textWidth2 = g.getFontMetrics().stringWidth(text2);
+		String title = "GAME OVER";
+		String message = "PRESS 1 TO RETURN TO MAIN MENU OR ESC TO EXIT";
+		int textWidth1 = g.getFontMetrics().stringWidth(title);
+		int textWidth2 = g.getFontMetrics().stringWidth(message);
 		g.setColor(Color.white);
-		g.drawString(text1, (aGameFrameBuffer.getWidth() - textWidth1)/2, aGameFrameBuffer.getHeight()/2 - 20);
-		g.drawString(text2, (aGameFrameBuffer.getWidth() - textWidth2)/2, aGameFrameBuffer.getHeight()/2 + 20);
+		g.drawString(title, (aGameFrameBuffer.getWidth() - textWidth1)/ 2,
+				aGameFrameBuffer.getHeight() / 2 - SPACING);
+		g.drawString(message, (aGameFrameBuffer.getWidth() - textWidth2)/ 2,
+				aGameFrameBuffer.getHeight() / 2 + SPACING);
 	}
 }

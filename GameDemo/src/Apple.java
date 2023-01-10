@@ -1,26 +1,20 @@
-package main.sprites;
-
-import main.Point;
 
 import java.util.Random;
 
 public class Apple {
+	private final int  X_MIN = 20;
+	private final int X_MAX = 620;
+	private final int Y_MIN = 50;
+	private final int Y_MAX = 420;
+	private final int APPLE_SIZE = 10;
 	private Point location;
-	private int appleSize;
-	
+
 	public Apple() {
         Random rand = new Random();
-		int Xmin = 20;
-        int Xmax = 620;
-        int Ymin = 50;
-        int Ymax = 420;
         int scale = 10;
-        int x = (rand.nextInt((Xmax - Xmin) + 1) + Xmin) / scale * scale;
-        int y = (rand.nextInt((Ymax - Ymin) + 1) + Ymin) / scale * scale;
-		//int x = 10 + (int)(Math.random() * 500);
-		//int y = 50 + (int)(Math.random() * 380);
+        int x = (rand.nextInt((X_MAX - X_MIN) + 1) + X_MIN) / scale * scale;
+        int y = (rand.nextInt((Y_MAX - Y_MIN) + 1) + Y_MIN) / scale * scale;
 		this.location = new Point(x, y);
-		this.appleSize = 10;
 	}
 
 	public Point getLocation() {
@@ -32,12 +26,6 @@ public class Apple {
 	}
 
 	public int getAppleSize() {
-		return appleSize;
+		return APPLE_SIZE;
 	}
-
-	
-	
-	
-	
-	
 }

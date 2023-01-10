@@ -1,11 +1,6 @@
-package main;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-
-import main.sprites.Apple;
-import main.sprites.Snake;
 
 public class PlayState extends GameState {
 	boolean active;
@@ -22,7 +17,7 @@ public class PlayState extends GameState {
 	
 	public void enter(Object memento) {
 		active = true;
-		input = (GameStateInput)memento;
+		input = (GameStateInput)memento; // is this safe casting?
 		level = input.getLevel();
 		lives = input.getLives();
 		score = 0;
@@ -53,10 +48,10 @@ public class PlayState extends GameState {
 	}
 	
 	public void update(long deltaTime) {
-		if (isSnakeHitWall())
-			snakeHitWall();
+		if (isSnakeHitWall(640, 480)) // TODO: see how we can get screen size dynamically.
+			handleSnakeHitWall();
 		if (isSnakeAteApple()) {
-			snakeAteApple();
+			handleSnakeAteApple();
 			score++;
 			apple = new Apple();
 		}
@@ -94,7 +89,8 @@ public class PlayState extends GameState {
 			drawWaitToNewGame(aGameFrameBuffer);
 
 		Graphics g = aGameFrameBuffer.graphics();
-		drawLivesMeter(g);
+		drawLivesMeter(aGameFrameBuffer);
+		drawScore(aGameFrameBuffer, score);
 		drawSnakeSprite(g);
 		drawAppleSprite(g);
 	}
@@ -113,20 +109,14 @@ public class PlayState extends GameState {
 
 	}
 
-	private void drawLivesMeter(Graphics g) {
-		String text = "LIVES";
-		g.drawString("LIVES", LIFE_BOX_SPACING, LIFE_BOX_SPACING);
-		g.setColor(Color.RED);
-		for (int i = 0; i < lives; i++) {
-			g.fillRect(LIFE_BOX_SPACING * 3 + (LIFE_BOX_SPACING * i), LIFE_BOX_SIZE - 5, LIFE_BOX_SIZE, LIFE_BOX_SIZE);
-		}
-		/*
-				g.setColor(Color.white);
+	private void drawLivesMeter(GameFrameBuffer aGameFrameBuffer) {
+		// TODO: upgrade to using constants
+		Graphics g = aGameFrameBuffer.graphics();
+		g.setColor(Color.white);
 		String text = "LIVES";
 		int textWidth = g.getFontMetrics().stringWidth(text);
-		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth)/2, 20);
+		g.drawString(text, (aGameFrameBuffer.getWidth() - textWidth) / 2, 20);
 		g.setColor(Color.RED);
-		//int x = 100;
 		int y = 30;
 		int width = 12;
 		int height = 12;
@@ -152,11 +142,11 @@ public class PlayState extends GameState {
 		            height/2);
 		    g.fillPolygon(triangleX, triangleY, triangleX.length);
 		}
-		 */
 	}
 
 	private void drawScore(GameFrameBuffer aGameFrameBuffer, int score) {
 		Graphics g = aGameFrameBuffer.graphics();
+
 		g.setColor(Color.white);
 		String text = "SCORE: " + score;
 		int textWidth = g.getFontMetrics().stringWidth(text);
@@ -165,46 +155,52 @@ public class PlayState extends GameState {
 
 	private void drawWaitToNewGame(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
-		String text = "The next game will start soon";
 
+		String text = "The next game will start soon";
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, aGameFrameBuffer.getWidth() / 2 - textWidth / 2, aGameFrameBuffer.getHeight() / 2);
 	}
 
-	public boolean isSnakeHitWall() {
-		return snake.getSnake().getFirst().getX() <= 0 || snake.getSnake().getFirst().getX() >= 640
-				|| snake.getSnake().getFirst().getY() >= 480 || snake.getSnake().getFirst().getY() <= 0;
+	private boolean isSnakeHitWall(int screenWidth, int screenHeight) {
+		return snake.getSnake().getFirst().getX() <= 0 ||
+				snake.getSnake().getFirst().getX() >= screenWidth ||
+				snake.getSnake().getFirst().getY() >= screenHeight ||
+				snake.getSnake().getFirst().getY() <= 0;
 	}
 
-	public void snakeHitWall() {
+	private void handleSnakeHitWall() {
 		lives--;
 		input = new GameStateInput(level, lives);
 		enter(input);
 	}
 
-	public boolean isSnakeAteApple() {
+	private boolean isSnakeAteApple() { // TODO: move to snake
 		return snake.getSnake().getFirst().getX() == apple.getLocation().getX() &&
 				snake.getSnake().getFirst().getY() == apple.getLocation().getY();
 	}
 
-	public void snakeAteApple() {
+	public void handleSnakeAteApple() {
+		// TODO: move to snake sprite and change to switch case
 		int lastX = snake.getSnake().getLast().getX();
 		int lastY = snake.getSnake().getLast().getY();
 		if (lastPressed == KeyEvent.VK_UP) {
 			addDown(lastX, lastY);
 		}
+
 		else if (lastPressed == KeyEvent.VK_DOWN) {
 			addUp(lastX, lastY);
 		}
+
 		else if (lastPressed == KeyEvent.VK_LEFT) {
 			addRight(lastX, lastY);
 		}
+
 		else if (lastPressed == KeyEvent.VK_RIGHT) {
 			addLeft(lastX, lastY);
 		}
-
 	}
 
+	// TODO: move to snake sprite
 	public void addDown(int lastX, int lastY) {
 		Point newLast = new Point(lastX, lastY + snake.getSnakeSpacing());
 		snake.getSnake().add(newLast);

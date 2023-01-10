@@ -12,7 +12,7 @@ public class DemoGame extends Game {
 	
 	public static void main( String[] args ) {
 	    Game app = new DemoGame();
-	    app.setTitle( "A Simple Game" );
+	    app.setTitle( "Snake" );
 	    app.setVisible( true );
 	    app.run();
 	    System.exit( 0 );

@@ -1,5 +1,3 @@
-package main.sprites;
-
 import java.util.LinkedList;
 
 public class Snake {
