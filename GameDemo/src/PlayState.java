@@ -107,7 +107,7 @@ public class PlayState extends GameState {
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, (aGameFrameBuffer.getWidth() - textWidth) / 2, DEFAULT_SPACING);
 		g.setColor(Color.RED);
-		int y = DEFAULT_SPACING, width = DEFALUT_SIZE, height = DEFALUT_SIZE;
+		int y = DEFAULT_SPACING + 10, width = DEFALUT_SIZE, height = DEFALUT_SIZE;
 
 		for (int i = 0; i < lives; i++) {
 			int x = LIVES_BASE_POSITION + (DEFAULT_SPACING * i);
