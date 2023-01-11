@@ -45,6 +45,7 @@ public class Snake {
 		this.snake.removeLast();
 		this.snake.addFirst(newHead);
 	}
+
 	public boolean isSnakeAteApple(Apple apple, int lastPressed) {
 		int snakeHeadX = this.snake.getFirst().getX();
 		int snakeHeadY = this.snake.getFirst().getY();
@@ -60,6 +61,19 @@ public class Snake {
 		return result;
 	}
 
+	public boolean isSnakeDead(int screenWidth, int screenHeight) {
+		int headX = this.snake.getFirst().getX();
+		int headY = this.snake.getFirst().getY();
+
+		boolean hitSelf = false;
+		for (int i = 1; i < this.length; i++) {
+			hitSelf = this.snake.get(i).equals(new Point(headX, headY));
+			if (hitSelf)
+				break;
+		}
+		return headX <= 0 || headX >= screenWidth || headY >= screenHeight || headY <= 0 || hitSelf;
+	}
+
 	private void handleSnakeAteApple(int lastPressed) {
 		Point newTail = null;
 		int tailX = snake.getLast().getX(), tailY = snake.getLast().getY();
@@ -69,7 +83,10 @@ public class Snake {
 			case(KeyEvent.VK_LEFT) -> newTail = new Point(tailX - SNAKE_SPACING, tailY);
 			case(KeyEvent.VK_RIGHT) -> newTail = new Point(tailX + SNAKE_SPACING, tailY);
 		}
-		if (newTail != null) // sanity check - should always be true
+		if (newTail != null)  { // sanity check - should always be true
 			snake.add(newTail);
+			this.length++;
+		}
+
 	}
 }

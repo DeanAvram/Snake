@@ -37,20 +37,35 @@ public class PlayState extends GameState {
 		Point newFirst = new Point(snake.getSnake().getFirst());
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			System.exit(0);
-		
-		switch(aKeyCode) {
-			case(KeyEvent.VK_LEFT) -> newFirst.setX(newFirst.getX() - snake.getSnakeSpacing());
-			case(KeyEvent.VK_RIGHT) -> newFirst.setX(newFirst.getX() + snake.getSnakeSpacing());
-			case(KeyEvent.VK_UP) -> newFirst.setY(newFirst.getY() - snake.getSnakeSpacing());
-			case(KeyEvent.VK_DOWN) -> newFirst.setY(newFirst.getY() + snake.getSnakeSpacing());
+
+		if (aKeyCode == KeyEvent.VK_RIGHT && lastKeyPressed == 0)
+			return;
+		boolean update = false;
+		if (aKeyCode == KeyEvent.VK_LEFT && lastKeyPressed != KeyEvent.VK_RIGHT) {
+			newFirst.setX(newFirst.getX() - snake.getSnakeSpacing());
+			update = true;
 		}
-		snake.move(newFirst);
-		lastKeyPressed = aKeyCode;
+		else if (aKeyCode == KeyEvent.VK_RIGHT && lastKeyPressed != KeyEvent.VK_LEFT) {
+			newFirst.setX(newFirst.getX() + snake.getSnakeSpacing());
+			update = true;
+		}
+		else if (aKeyCode == KeyEvent.VK_UP && lastKeyPressed != KeyEvent.VK_DOWN) {
+			newFirst.setY(newFirst.getY() - snake.getSnakeSpacing());
+			update = true;
+		}
+		else if (aKeyCode == KeyEvent.VK_DOWN && lastKeyPressed != KeyEvent.VK_UP) {
+			newFirst.setY(newFirst.getY() + snake.getSnakeSpacing());
+			update = true;
+		}
+		if (update) {
+			lastKeyPressed = aKeyCode;
+			snake.move(newFirst);
+		}
 	}
 	
 	public void update(long deltaTime) {
-		if (isSnakeHitWall(640, 480)) // TODO: see how we can get screen size dynamically.
-			handleSnakeHitWall();
+		if (this.snake.isSnakeDead(640, 480)) // TODO: see how we can get screen size dynamically.
+			handleSnakeDead();
 
 		if (this.snake.isSnakeAteApple(this.apple, lastKeyPressed)) {
 			score++;
@@ -68,6 +83,7 @@ public class PlayState extends GameState {
 			case(KeyEvent.VK_RIGHT) -> newX = (int)(snakeHead.getX() + deltaPos);
 			case(KeyEvent.VK_UP) -> newY = (int)(snakeHead.getY() - deltaPos);
 			case(KeyEvent.VK_DOWN) -> newY = (int)(snakeHead.getY() + deltaPos);
+			default -> { return; }
 		}
 		this.snake.move(new Point(newX, newY));
 	}
@@ -152,14 +168,7 @@ public class PlayState extends GameState {
 		g.drawString(text, aGameFrameBuffer.getWidth() / 2 - textWidth / 2, aGameFrameBuffer.getHeight() / 2);
 	}
 
-	private boolean isSnakeHitWall(int screenWidth, int screenHeight) {
-		return snake.getSnake().getFirst().getX() <= 0 ||
-				snake.getSnake().getFirst().getX() >= screenWidth ||
-				snake.getSnake().getFirst().getY() >= screenHeight ||
-				snake.getSnake().getFirst().getY() <= 0;
-	}
-
-	private void handleSnakeHitWall() {
+	private void handleSnakeDead() {
 		lives--;
 		input = new GameStateInput(level, lives);
 		enter(input);
