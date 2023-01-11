@@ -1,6 +1,6 @@
-public class DemoGame extends Game {
+public class Main extends Game {
 
-	public DemoGame() {
+	public Main() {
 		GameState welcome = new WelcomeState();
 		GameState play = new PlayState();
 		GameState end = new EndGameState();
@@ -11,7 +11,7 @@ public class DemoGame extends Game {
 	}
 	
 	public static void main( String[] args ) {
-	    Game app = new DemoGame();
+	    Game app = new Main();
 	    app.setTitle( "Snake" );
 	    app.setVisible( true );
 	    app.run();

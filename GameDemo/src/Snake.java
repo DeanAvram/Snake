@@ -1,3 +1,4 @@
+import java.awt.event.KeyEvent;
 import java.util.LinkedList;
 
 public class Snake {
@@ -43,5 +44,32 @@ public class Snake {
 	public void move(Point newHead) {
 		this.snake.removeLast();
 		this.snake.addFirst(newHead);
+	}
+	public boolean isSnakeAteApple(Apple apple, int lastPressed) {
+		int snakeHeadX = this.snake.getFirst().getX();
+		int snakeHeadY = this.snake.getFirst().getY();
+		int appleX = apple.getLocation().getX();
+		int appleY = apple.getLocation().getY();
+		int apple_side_length = apple.getAppleSize();
+
+		boolean isXHitting = snakeHeadX <= appleX + apple_side_length && snakeHeadX >= appleX - apple_side_length;
+		boolean isYHitting = snakeHeadY <= appleY + apple_side_length && snakeHeadY >= appleY - apple_side_length;
+		boolean result = isXHitting && isYHitting;
+		if (result)
+			handleSnakeAteApple(lastPressed);
+		return result;
+	}
+
+	private void handleSnakeAteApple(int lastPressed) {
+		Point newTail = null;
+		int tailX = snake.getLast().getX(), tailY = snake.getLast().getY();
+		switch (lastPressed) {
+			case(KeyEvent.VK_UP) -> newTail = new Point(tailX, tailY + SNAKE_SPACING);
+			case(KeyEvent.VK_DOWN) -> newTail = new Point(tailX, tailY - SNAKE_SPACING);
+			case(KeyEvent.VK_LEFT) -> newTail = new Point(tailX - SNAKE_SPACING, tailY);
+			case(KeyEvent.VK_RIGHT) -> newTail = new Point(tailX + SNAKE_SPACING, tailY);
+		}
+		if (newTail != null) // sanity check - should always be true
+			snake.add(newTail);
 	}
 }
