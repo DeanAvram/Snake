@@ -11,9 +11,8 @@ public class Apple {
 
 	public Apple() {
         Random rand = new Random();
-        int scale = 10;
-        int x = (rand.nextInt((X_MAX - X_MIN) + 1) + X_MIN) / scale * scale;
-        int y = (rand.nextInt((Y_MAX - Y_MIN) + 1) + Y_MIN) / scale * scale;
+        int x = (rand.nextInt((X_MAX - X_MIN) + 1) + X_MIN) / APPLE_SIZE * APPLE_SIZE;
+        int y = (rand.nextInt((Y_MAX - Y_MIN) + 1) + Y_MIN) / APPLE_SIZE * APPLE_SIZE;
 		this.location = new Point(x, y);
 	}
 

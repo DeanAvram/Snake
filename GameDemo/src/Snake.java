@@ -71,7 +71,9 @@ public class Snake {
 			if (hitSelf)
 				break;
 		}
-		return headX <= 0 || headX >= screenWidth || headY >= screenHeight || headY <= 0 || hitSelf;
+		return 	headX < SNAKE_SPACING || headX >= screenWidth - SNAKE_SPACING ||
+				headY >= screenHeight - SNAKE_SPACING || headY < SNAKE_SPACING ||
+				hitSelf;
 	}
 
 	private void handleSnakeAteApple(int lastPressed) {

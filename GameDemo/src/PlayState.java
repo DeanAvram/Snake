@@ -11,7 +11,6 @@ public class PlayState extends GameState {
 	private int lives;
 	private int score;
 	private int lastKeyPressed;
-	private float averageDeltaTime;
 
 	private final int DEFAULT_SPACING = 20;
 	private final int DEFALUT_SIZE = 12;
@@ -26,7 +25,6 @@ public class PlayState extends GameState {
 		isActive = lives > 0;
 		score = 0;
 		lastKeyPressed = 0;
-		averageDeltaTime = 0;
 		snake = new Snake();
 		apple = new Apple();
 	}
@@ -35,32 +33,27 @@ public class PlayState extends GameState {
 
 	public void processKeyReleased(int aKeyCode) {
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
-			System.exit(0);
+			isActive = false;
 
 		if (aKeyCode == KeyEvent.VK_RIGHT && lastKeyPressed == 0)
 			return;
-		
-		Point newFirst = new Point(snake.getSnake().getFirst());
-		boolean update = false;
+
+		Point newHead = new Point(snake.getSnake().getFirst());
 		if (aKeyCode == KeyEvent.VK_LEFT && lastKeyPressed != KeyEvent.VK_RIGHT) {
-			newFirst.setX(newFirst.getX() - snake.getSnakeSpacing());
-			update = true;
+			newHead.setX(newHead.getX() - snake.getSnakeSpacing());
+			lastKeyPressed = aKeyCode;
 		}
 		else if (aKeyCode == KeyEvent.VK_RIGHT && lastKeyPressed != KeyEvent.VK_LEFT) {
-			newFirst.setX(newFirst.getX() + snake.getSnakeSpacing());
-			update = true;
+			newHead.setX(newHead.getX() + snake.getSnakeSpacing());
+			lastKeyPressed = aKeyCode;
 		}
 		else if (aKeyCode == KeyEvent.VK_UP && lastKeyPressed != KeyEvent.VK_DOWN) {
-			newFirst.setY(newFirst.getY() - snake.getSnakeSpacing());
-			update = true;
+			newHead.setY(newHead.getY() - snake.getSnakeSpacing());
+			lastKeyPressed = aKeyCode;
 		}
 		else if (aKeyCode == KeyEvent.VK_DOWN && lastKeyPressed != KeyEvent.VK_UP) {
-			newFirst.setY(newFirst.getY() + snake.getSnakeSpacing());
-			update = true;
-		}
-		if (update) {
+			newHead.setY(newHead.getY() + snake.getSnakeSpacing());
 			lastKeyPressed = aKeyCode;
-			snake.move(newFirst);
 		}
 	}
 	
@@ -75,8 +68,7 @@ public class PlayState extends GameState {
 			} while(this.snake.getSnake().contains(apple.getLocation()));
 		}
 
-		averageDeltaTime = averageDeltaTime * level * 0.9f + 0.001f * deltaTime;
-		float deltaPos = this.snake.getSnakeSpacing() + averageDeltaTime;
+		float deltaPos = level + deltaTime * 0.2f;
 		Point snakeHead = this.snake.getSnake().getFirst();
 		int newX = snakeHead.getX(), newY = snakeHead.getY();
 		switch (lastKeyPressed) {
@@ -94,9 +86,6 @@ public class PlayState extends GameState {
 	public String next() { return "End"; }
 
 	public void render(GameFrameBuffer aGameFrameBuffer) {
-		if (lives != 3)
-			drawWaitToNewGame(aGameFrameBuffer);
-
 		Graphics g = aGameFrameBuffer.graphics();
 		drawLivesMeter(aGameFrameBuffer);
 		drawScore(aGameFrameBuffer, score);
@@ -159,14 +148,6 @@ public class PlayState extends GameState {
 		String text = "SCORE: " + score;
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 3);
-	}
-
-	private void drawWaitToNewGame(GameFrameBuffer aGameFrameBuffer) {
-		Graphics g = aGameFrameBuffer.graphics();
-
-		String text = "The next game will start soon";
-		int textWidth = g.getFontMetrics().stringWidth(text);
-		g.drawString(text, aGameFrameBuffer.getWidth() / 2 - textWidth / 2, aGameFrameBuffer.getHeight() / 2);
 	}
 
 	private void handleSnakeDead() {
