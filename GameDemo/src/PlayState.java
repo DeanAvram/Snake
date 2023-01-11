@@ -34,12 +34,13 @@ public class PlayState extends GameState {
 	public void processKeyPressed(int aKeyCode) {}
 
 	public void processKeyReleased(int aKeyCode) {
-		Point newFirst = new Point(snake.getSnake().getFirst());
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			System.exit(0);
 
 		if (aKeyCode == KeyEvent.VK_RIGHT && lastKeyPressed == 0)
 			return;
+		
+		Point newFirst = new Point(snake.getSnake().getFirst());
 		boolean update = false;
 		if (aKeyCode == KeyEvent.VK_LEFT && lastKeyPressed != KeyEvent.VK_RIGHT) {
 			newFirst.setX(newFirst.getX() - snake.getSnakeSpacing());
