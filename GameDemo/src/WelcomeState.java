@@ -6,6 +6,7 @@ public class WelcomeState extends GameState {
 	private boolean active;
 	private int chosenLevel;
 
+	private final int DEFAULT_SPACING = 20;
 	private final String WELCOME_TEXT = "WELCOME TO SNAKE GAME";
 	private final String LEVEL_TEXT = "CHOOSE LEVEL:";
 	private final String LEVEL_1_TEXT = "1 - EASY";
@@ -50,18 +51,22 @@ public class WelcomeState extends GameState {
 		g.setColor(Color.white);
 		// TODO: upgrade to using constants
 		int textWidth1 = g.getFontMetrics().stringWidth(WELCOME_TEXT);
-		g.drawString(WELCOME_TEXT, (aGameFrameBuffer.getWidth()-textWidth1) / 2, aGameFrameBuffer.getHeight() / 2 - 60);
+		g.drawString(WELCOME_TEXT, (aGameFrameBuffer.getWidth()-textWidth1) / 2,
+				aGameFrameBuffer.getHeight() / 2 - (DEFAULT_SPACING * 3));
 		
 		int textWidth2 = g.getFontMetrics().stringWidth(LEVEL_TEXT);
-		g.drawString(LEVEL_TEXT, (aGameFrameBuffer.getWidth()-textWidth2) / 2, aGameFrameBuffer.getHeight() / 2 - 20);
+		g.drawString(LEVEL_TEXT, (aGameFrameBuffer.getWidth()-textWidth2) / 2,
+				aGameFrameBuffer.getHeight() / 2 - DEFAULT_SPACING);
 		
 		int textWidth3 = g.getFontMetrics().stringWidth(LEVEL_1_TEXT);
 		g.drawString(LEVEL_1_TEXT, (aGameFrameBuffer.getWidth()-textWidth3) / 2, aGameFrameBuffer.getHeight() / 2);
 		
 		int textWidth4 = g.getFontMetrics().stringWidth(LEVEL_2_TEXT);
-		g.drawString(LEVEL_2_TEXT, (aGameFrameBuffer.getWidth()-textWidth4) / 2, aGameFrameBuffer.getHeight() / 2 + 20);
+		g.drawString(LEVEL_2_TEXT, (aGameFrameBuffer.getWidth()-textWidth4) / 2,
+				aGameFrameBuffer.getHeight() / 2 + DEFAULT_SPACING);
 		
 		int textWidth5 = g.getFontMetrics().stringWidth(LEVEL_3_TEXT);
-		g.drawString(LEVEL_3_TEXT, (aGameFrameBuffer.getWidth()-textWidth5) / 2, aGameFrameBuffer.getHeight() / 2 + 40);
+		g.drawString(LEVEL_3_TEXT, (aGameFrameBuffer.getWidth()-textWidth5) / 2,
+				aGameFrameBuffer.getHeight() / 2 + (DEFAULT_SPACING * 2));
 	}
 }

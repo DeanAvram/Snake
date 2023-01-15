@@ -159,5 +159,5 @@ public class PlayState extends GameState {
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 3);
 	}
 
-	private void handleSnakeDead() { enter(new GameStateInput(--level, lives));	}
+	private void handleSnakeDead() { enter(new GameStateInput(level, --lives));	}
 }
