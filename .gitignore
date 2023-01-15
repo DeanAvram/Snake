@@ -16,3 +16,4 @@ out
 /dataSources/
 /dataSources.local.xml
 /*/bin/
+/.metadata/

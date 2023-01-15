@@ -43,14 +43,28 @@ public class WelcomeState extends GameState {
 	@Override
 	public String next() { return "Play"; }
 	
+	
+	public void draw_string(GameFrameBuffer aGameFrameBuffer, Graphics g, String text, int index) {
+		int textWidth = g.getFontMetrics().stringWidth(text);
+		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, aGameFrameBuffer.getHeight() / 2 - (index * DEFAULT_SPACING));
+	}
+ 
+	
 	@Override
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
 
 		
 		g.setColor(Color.white);
+		
+		draw_string(aGameFrameBuffer, g, WELCOME_TEXT, 2);
+		draw_string(aGameFrameBuffer, g, LEVEL_TEXT, 1);
+		draw_string(aGameFrameBuffer, g, LEVEL_1_TEXT, 0);
+		draw_string(aGameFrameBuffer, g, LEVEL_2_TEXT, -1);
+		draw_string(aGameFrameBuffer, g, LEVEL_3_TEXT, -2);
+		
 		// TODO: upgrade to using constants
-		int textWidth1 = g.getFontMetrics().stringWidth(WELCOME_TEXT);
+		/*int textWidth1 = g.getFontMetrics().stringWidth(WELCOME_TEXT);
 		g.drawString(WELCOME_TEXT, (aGameFrameBuffer.getWidth()-textWidth1) / 2,
 				aGameFrameBuffer.getHeight() / 2 - (DEFAULT_SPACING * 3));
 		
@@ -67,6 +81,6 @@ public class WelcomeState extends GameState {
 		
 		int textWidth5 = g.getFontMetrics().stringWidth(LEVEL_3_TEXT);
 		g.drawString(LEVEL_3_TEXT, (aGameFrameBuffer.getWidth()-textWidth5) / 2,
-				aGameFrameBuffer.getHeight() / 2 + (DEFAULT_SPACING * 2));
+				aGameFrameBuffer.getHeight() / 2 + (DEFAULT_SPACING * 2));*/
 	}
 }
