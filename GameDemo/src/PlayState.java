@@ -3,7 +3,6 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 
 public class PlayState extends GameState {
-	private GameStateInput input;
 	private Snake snake;
 	private Apple apple;
 	private boolean isActive;
@@ -18,8 +17,12 @@ public class PlayState extends GameState {
 
 	public PlayState() {}
 	
+	@Override
 	public void enter(Object memento) {
-		input = (GameStateInput)memento; // is this safe casting?
+		if (!(memento instanceof GameStateInput))
+			throw new RuntimeException("Invalid enter input");
+
+		GameStateInput input = (GameStateInput)memento;
 		level = input.getLevel();
 		lives = input.getLives();
 		isActive = lives > 0;
@@ -29,8 +32,10 @@ public class PlayState extends GameState {
 		apple = new Apple();
 	}
 
+	@Override
 	public void processKeyPressed(int aKeyCode) {}
 
+	@Override
 	public void processKeyReleased(int aKeyCode) {
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			isActive = false;
@@ -57,6 +62,7 @@ public class PlayState extends GameState {
 		}
 	}
 	
+	@Override
 	public void update(long deltaTime) {
 		if (this.snake.isSnakeDead(640, 480)) // TODO: see how we can get screen size dynamically.
 			handleSnakeDead();
@@ -81,10 +87,13 @@ public class PlayState extends GameState {
 		this.snake.move(new Point(newX, newY));
 	}
 	
+	@Override
 	public boolean isActive() { return isActive; }
 	
+	@Override
 	public String next() { return "End"; }
 
+	@Override
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
 		drawLivesMeter(aGameFrameBuffer);
@@ -150,9 +159,5 @@ public class PlayState extends GameState {
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 3);
 	}
 
-	private void handleSnakeDead() {
-		lives--;
-		input = new GameStateInput(level, lives);
-		enter(input);
-	}
+	private void handleSnakeDead() { enter(new GameStateInput(--level, lives));	}
 }

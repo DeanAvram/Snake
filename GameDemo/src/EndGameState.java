@@ -5,11 +5,13 @@ import java.awt.event.KeyEvent;
 public class EndGameState extends GameState {
 	private final int SPACING = 20;
 	boolean active;
-	
+
+	@Override
 	public void enter(Object memento) {
 		active = true;
 	}
 	
+	@Override
 	public void processKeyReleased(int aKeyCode) {
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			System.exit(0);
@@ -17,12 +19,15 @@ public class EndGameState extends GameState {
 			active = false;
 	}
 	
+	@Override
 	public boolean isActive() { return active; }
 	
+	@Override
 	public String next() {
 		return "Welcome";
 	}
 
+	@Override
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
 		String title = "GAME OVER";

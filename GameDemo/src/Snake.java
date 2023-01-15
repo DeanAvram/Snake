@@ -16,7 +16,7 @@ public class Snake {
 		int x = SNAKE_SPACING + (int)(Math.random() * 500);
 		int y = SNAKE_SPACING + (int)(Math.random() * 400);
 		for (int i = 0; i < this.length; i++) {
-			Point p = new Point(x + (i * SNAKE_SPACING), y);
+			Point p = new Point(x + (i * SNAKE_SPACING / 2), y);
 			this.snake.add(p);
 		}
 	}
@@ -53,9 +53,8 @@ public class Snake {
 		int appleY = apple.getLocation().getY();
 		int apple_side_length = apple.getAppleSize();
 
-		boolean isXHitting = snakeHeadX <= appleX + apple_side_length && snakeHeadX >= appleX - apple_side_length;
-		boolean isYHitting = snakeHeadY <= appleY + apple_side_length && snakeHeadY >= appleY - apple_side_length;
-		boolean result = isXHitting && isYHitting;
+		boolean result = isCoordinateHitting(snakeHeadX, appleX, apple_side_length) &&
+						 isCoordinateHitting(snakeHeadY,appleY, apple_side_length);
 		if (result)
 			handleSnakeAteApple(lastPressed);
 		return result;
@@ -66,11 +65,9 @@ public class Snake {
 		int headY = this.snake.getFirst().getY();
 
 		boolean hitSelf = false;
-		for (int i = 1; i < this.length; i++) {
+		for (int i = 1; i < this.length && !hitSelf; i++)
 			hitSelf = this.snake.get(i).equals(new Point(headX, headY));
-			if (hitSelf)
-				break;
-		}
+
 		return 	headX < SNAKE_SPACING || headX >= screenWidth - SNAKE_SPACING ||
 				headY >= screenHeight - SNAKE_SPACING || headY < SNAKE_SPACING ||
 				hitSelf;
@@ -89,6 +86,9 @@ public class Snake {
 			snake.add(newTail);
 			this.length++;
 		}
+	}
 
+	private boolean isCoordinateHitting(int source, int dest, int hitBoxSideLength) {
+		return source <= dest + hitBoxSideLength && source >= dest - hitBoxSideLength;
 	}
 }
