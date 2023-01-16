@@ -5,6 +5,7 @@ import java.awt.event.KeyEvent;
 public class WelcomeState extends GameState {
 	private boolean active;
 	private int chosenLevel;
+	private int highScore;
 
 	private final int DEFAULT_SPACING = 20;
 	private final String WELCOME_TEXT = "WELCOME TO SNAKE GAME";
@@ -16,12 +17,15 @@ public class WelcomeState extends GameState {
 	@Override
 	public void enter(Object memento) {
 		active = true;
+		
 	}
 
 	@Override
 	public Object memento() {
 		int lives = 3;
-		return new GameStateInput(chosenLevel, lives);
+		highScore = 0;
+		//TODO: Replace 0 with read from file - if there is no file - need to be 0
+		return new GameStateInput(chosenLevel, lives, highScore);
 	}
 	
 	@Override

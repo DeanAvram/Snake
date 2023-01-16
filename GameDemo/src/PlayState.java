@@ -8,6 +8,7 @@ public class PlayState extends GameState {
 	private boolean isActive;
 	private int level;
 	private int lives;
+	private int highScore;
 	private int score;
 	private int lastKeyPressed;
 
@@ -17,6 +18,12 @@ public class PlayState extends GameState {
 
 	public PlayState() {}
 	
+	
+	@Override
+	public Object memento() {
+		return new EndStateInput(highScore);
+	}
+	
 	@Override
 	public void enter(Object memento) {
 		if (!(memento instanceof GameStateInput))
@@ -25,11 +32,13 @@ public class PlayState extends GameState {
 		GameStateInput input = (GameStateInput)memento;
 		level = input.getLevel();
 		lives = input.getLives();
+		highScore = input.getHighScore();
 		isActive = lives > 0;
 		score = 0;
 		lastKeyPressed = 0;
 		snake = new Snake();
 		apple = new Apple();
+		//System.out.println(highScore);
 	}
 
 	@Override
@@ -64,8 +73,10 @@ public class PlayState extends GameState {
 	
 	@Override
 	public void update(long deltaTime) {
-		if (this.snake.isSnakeDead(640, 480)) // TODO: see how we can get screen size dynamically.
+		if (this.snake.isSnakeDead(640, 480)) { // TODO: see how we can get screen size dynamically.
+			handleHighScore();
 			handleSnakeDead();
+		}
 
 		if (this.snake.isSnakeAteApple(this.apple, lastKeyPressed)) {
 			score++;
@@ -159,5 +170,10 @@ public class PlayState extends GameState {
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 3);
 	}
 
-	private void handleSnakeDead() { enter(new GameStateInput(level, --lives));	}
+	private void handleSnakeDead() { enter(new GameStateInput(level, --lives, highScore));	}
+	
+	private void handleHighScore() {
+		if (score > highScore)
+			highScore = score;
+	}
 }

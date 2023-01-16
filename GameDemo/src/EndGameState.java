@@ -9,6 +9,13 @@ public class EndGameState extends GameState {
 	@Override
 	public void enter(Object memento) {
 		active = true;
+		if (!(memento instanceof EndStateInput))
+			throw new RuntimeException("Invalid enter input");
+
+		EndStateInput input = (EndStateInput)memento;
+		System.out.println(input.getHighScore());
+		//TODO: Check if input.highScore > highScore in file
+		//		if true -> replace the highScore if false -> do nothing
 	}
 	
 	@Override
