@@ -23,8 +23,8 @@ public class WelcomeState extends GameState {
 	@Override
 	public Object memento() {
 		int lives = 3;
-		highScore = 0;
-		//TODO: Replace 0 with read from file - if there is no file - need to be 0
+		FileController fc = new FileController();
+		highScore = Integer.parseInt(fc.GetHighScoreInFile());
 		return new GameStateInput(chosenLevel, lives, highScore);
 	}
 	

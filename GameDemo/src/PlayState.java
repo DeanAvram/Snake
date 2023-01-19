@@ -80,6 +80,8 @@ public class PlayState extends GameState {
 
 		if (this.snake.isSnakeAteApple(this.apple, lastKeyPressed)) {
 			score++;
+			if (score > highScore)
+				highScore = score;
 			do {
 				apple = new Apple(); // generate new apple and check if it is not on the snake body
 			} while(this.snake.getSnake().contains(apple.getLocation()));
@@ -111,6 +113,7 @@ public class PlayState extends GameState {
 		drawScore(aGameFrameBuffer, score);
 		drawSnakeSprite(g);
 		drawAppleSprite(g);
+		drawHighScore(aGameFrameBuffer, highScore);
 	}
 
 	private void drawAppleSprite(Graphics g) {
@@ -169,6 +172,16 @@ public class PlayState extends GameState {
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 3);
 	}
+	
+	private void drawHighScore(GameFrameBuffer aGameFrameBuffer, int score) {
+		Graphics g = aGameFrameBuffer.graphics();
+
+		g.setColor(Color.white);
+		String text = "HIGH SCORE: " + score;
+		int textWidth = g.getFontMetrics().stringWidth(text);
+		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 4);
+	}
+	
 
 	private void handleSnakeDead() { enter(new GameStateInput(level, --lives, highScore));	}
 	

@@ -1,6 +1,15 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Writer;
 
 public class EndGameState extends GameState {
 	private final int SPACING = 20;
@@ -13,9 +22,14 @@ public class EndGameState extends GameState {
 			throw new RuntimeException("Invalid enter input");
 
 		EndStateInput input = (EndStateInput)memento;
-		System.out.println(input.getHighScore());
-		//TODO: Check if input.highScore > highScore in file
-		//		if true -> replace the highScore if false -> do nothing
+		FileController fc = new FileController();
+		try {
+			
+			fc.SaveHighScoreToFile(input.getHighScore());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	@Override
