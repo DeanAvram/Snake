@@ -17,8 +17,7 @@ public class PlayState extends GameState {
 	private final int LIVES_BASE_POSITION = 295;
 
 	public PlayState() {}
-	
-	
+
 	@Override
 	public Object memento() {
 		return new EndStateInput(highScore);
@@ -38,7 +37,6 @@ public class PlayState extends GameState {
 		lastKeyPressed = 0;
 		snake = new Snake();
 		apple = new Apple();
-		//System.out.println(highScore);
 	}
 
 	@Override
@@ -181,7 +179,6 @@ public class PlayState extends GameState {
 		int textWidth = g.getFontMetrics().stringWidth(text);
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 4);
 	}
-	
 
 	private void handleSnakeDead() { enter(new GameStateInput(level, --lives, highScore));	}
 	

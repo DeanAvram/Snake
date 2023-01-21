@@ -1,19 +1,11 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
-import java.io.Writer;
 
 public class EndGameState extends GameState {
 	private final int SPACING = 20;
-	boolean active;
+	private boolean active;
 
 	@Override
 	public void enter(Object memento) {
@@ -24,8 +16,7 @@ public class EndGameState extends GameState {
 		EndStateInput input = (EndStateInput)memento;
 		FileController fc = new FileController();
 		try {
-			
-			fc.SaveHighScoreToFile(input.getHighScore());
+			fc.saveHighScoreToFile(input.getHighScore());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

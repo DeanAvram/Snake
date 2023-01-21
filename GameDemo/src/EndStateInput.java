@@ -1,6 +1,5 @@
 
 public class EndStateInput {
-	
 	private int highScore;
 	
 	public EndStateInput(int highScore) {
@@ -14,7 +13,4 @@ public class EndStateInput {
 	public void setHighScore(int highScore) {
 		this.highScore = highScore;
 	}
-	
-	
-
 }

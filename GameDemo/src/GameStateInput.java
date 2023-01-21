@@ -32,6 +32,4 @@ public class GameStateInput {
 	public void setHighScore(int highScore) {
 		this.highScore = highScore;
 	}
-	
-	
 }
