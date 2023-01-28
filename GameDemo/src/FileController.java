@@ -15,7 +15,6 @@ public class FileController {
 			this.isNew = this.file.createNewFile();
 			saveHighScoreToFile(0);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

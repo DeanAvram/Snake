@@ -7,9 +7,7 @@ public class Apple {
 	private int screenHeight;
 	
 	private final int  X_MIN = 20;
-	//private final int X_MAX = 620;
 	private final int Y_MIN = 80;
-	//private final int Y_MAX = 420;
 	private final int APPLE_SIZE = 10;
 	private Point location;
 

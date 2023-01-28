@@ -23,7 +23,6 @@ public class WelcomeState extends GameState {
 
 	@Override
 	public Object memento() {
-		//System.out.println(w);
 		int lives = 3;
 		FileController fc = new FileController();
 		highScore = Integer.parseInt(fc.getHighScoreFromFile());
