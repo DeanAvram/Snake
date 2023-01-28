@@ -13,6 +13,8 @@ public class WelcomeState extends GameState {
 	private final String LEVEL_1_TEXT = "1 - EASY";
 	private final String LEVEL_2_TEXT = "2 - MEDIUM";
 	private final String LEVEL_3_TEXT = "3 - HARD";
+	private int screenWidth;
+	private int screenHeight;
 
 	@Override
 	public void enter(Object memento) {
@@ -21,23 +23,25 @@ public class WelcomeState extends GameState {
 
 	@Override
 	public Object memento() {
+		//System.out.println(w);
 		int lives = 3;
 		FileController fc = new FileController();
 		highScore = Integer.parseInt(fc.getHighScoreFromFile());
-		return new GameStateInput(chosenLevel, lives, highScore);
+		return new GameStateInput(chosenLevel, lives, highScore, screenWidth, screenHeight);
 	}
 	
 	@Override
 	public void processKeyReleased(int aKeyCode) {
 		if (aKeyCode == KeyEvent.VK_ESCAPE)
 			System.exit(0);
-		if (aKeyCode == KeyEvent.VK_1 || aKeyCode == KeyEvent.VK_NUMPAD1)
+		if (aKeyCode == KeyEvent.VK_1 || aKeyCode == KeyEvent.VK_NUMPAD1) 
 			chosenLevel = 1;
-		if (aKeyCode == KeyEvent.VK_2 || aKeyCode == KeyEvent.VK_NUMPAD2)
+		if (aKeyCode == KeyEvent.VK_2 || aKeyCode == KeyEvent.VK_NUMPAD2) 
 			chosenLevel = 2;
-		if (aKeyCode == KeyEvent.VK_3 || aKeyCode == KeyEvent.VK_NUMPAD3)
+		if (aKeyCode == KeyEvent.VK_3 || aKeyCode == KeyEvent.VK_NUMPAD3) 
 			chosenLevel = 3;
-		active = false;
+		active = !(chosenLevel >= 1 && chosenLevel <= 3);
+		//if choseLevel is not between 1 to 3 -> active need to be true and stay in this state
 	}
 
 	@Override
@@ -49,7 +53,8 @@ public class WelcomeState extends GameState {
 	@Override
 	public void render(GameFrameBuffer aGameFrameBuffer) {
 		Graphics g = aGameFrameBuffer.graphics();
-
+		screenWidth = aGameFrameBuffer.getWidth();
+		screenHeight = aGameFrameBuffer.getHeight();
 		g.setColor(Color.white);
 		
 		draw_string(aGameFrameBuffer, g, WELCOME_TEXT, 2);

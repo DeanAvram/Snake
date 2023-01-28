@@ -11,6 +11,8 @@ public class PlayState extends GameState {
 	private int highScore;
 	private int score;
 	private int lastKeyPressed;
+	private int screenWidth;
+	private int screenHeight;
 
 	private final int DEFAULT_SPACING = 20;
 	private final int DEFALUT_SIZE = 12;
@@ -32,11 +34,13 @@ public class PlayState extends GameState {
 		level = input.getLevel();
 		lives = input.getLives();
 		highScore = input.getHighScore();
+		screenWidth = input.getScreeenWidth();
+		screenHeight = input.getScreenHeight();
 		isActive = lives > 0;
 		score = 0;
 		lastKeyPressed = 0;
-		snake = new Snake();
-		apple = new Apple();
+		snake = new Snake(screenWidth, screenHeight);
+		apple = new Apple(screenWidth, screenHeight);
 	}
 
 	@Override
@@ -71,7 +75,7 @@ public class PlayState extends GameState {
 	
 	@Override
 	public void update(long deltaTime) {
-		if (this.snake.isSnakeDead(640, 480)) { // TODO: see how we can get screen size dynamically.
+		if (this.snake.isSnakeDead(screenWidth, screenHeight)) {
 			handleHighScore();
 			handleSnakeDead();
 		}
@@ -81,7 +85,7 @@ public class PlayState extends GameState {
 			if (score > highScore)
 				highScore = score;
 			do {
-				apple = new Apple(); // generate new apple and check if it is not on the snake body
+				apple = new Apple(screenWidth, screenHeight); // generate new apple and check if it is not on the snake body
 			} while(this.snake.getSnake().contains(apple.getLocation()));
 		}
 
@@ -180,7 +184,7 @@ public class PlayState extends GameState {
 		g.drawString(text, (aGameFrameBuffer.getWidth()-textWidth) / 2, DEFAULT_SPACING * 4);
 	}
 
-	private void handleSnakeDead() { enter(new GameStateInput(level, --lives, highScore));	}
+	private void handleSnakeDead() { enter(new GameStateInput(level, --lives, highScore, screenWidth, screenHeight));	}
 	
 	private void handleHighScore() {
 		if (score > highScore)

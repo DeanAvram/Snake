@@ -5,16 +5,21 @@ public class Snake {
 	private LinkedList<Point> snake;
 	private final int SNAKE_SPACING = 10;
 	private int length;
+	private int screenWidth;
+	private int screenHeight;
 	
-	public Snake() {
+	public Snake(int screenWidth, int screenHeight) {
 		this.length = 3;
 		this.snake = new LinkedList<>();
-		initSnake();
+		this.screenWidth = screenWidth;
+		this.screenHeight = screenHeight;
+		initSnake(this.screenWidth, this.screenHeight);
 	}
 	
-	public void initSnake() {
-		int x = SNAKE_SPACING + (int)(Math.random() * 500);
-		int y = SNAKE_SPACING + (int)(Math.random() * 400);
+	
+	public void initSnake(int screenWidth, int screenHeight) {
+		int x = SNAKE_SPACING + (int)(Math.random() * (screenWidth - (2 * SNAKE_SPACING)));
+		int y = (3 * SNAKE_SPACING) + (int)(Math.random() * (screenHeight - (2 * SNAKE_SPACING)));
 		for (int i = 0; i < this.length; i++) {
 			Point p = new Point(x + (i * SNAKE_SPACING / 2), y);
 			this.snake.add(p);
